@@ -23,7 +23,7 @@ def interview():
     '''
     pitches= Pitch.get_all_pitches()
     title = 'Home - Welcome to The best Pitching Website Online'
-    return render_template('interview.html', title = title, pitches= pitches )
+    return render_template('index.html', title = title, pitches= pitches )
 
 @main.route('/pick_up_lines/pitches/')
 def pick_up_line():
