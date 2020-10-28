@@ -14,7 +14,7 @@ def login():
     if login_form.validate_on_submit():
         user = Role.query.filter_by(email = login_form.email.data).first()
         if user is not None and user.verify_password(login_form.password.data):
-            login_user(user,login_form.remember.data)
+            login_user(Role,login_form.remember.data)
             return redirect(request.args.get('next') or url_for('mai.index'))
 
         flash('Invalid username or Password')
@@ -28,14 +28,14 @@ def register():
     form = Registration()
     if form.validate_on_submit():
         user = Role(email = form.email.data, username = form.username.data,password = form.password.data)
-        db.session.add(user)
+        db.session.add(Role)
         db.session.commit()
 
-        mail_message("Welcome to one minute pitch","email/welcome_user",user.email,user=user)
+        mail_message("Welcome to one minute pitch","email/welcome_user",Role.email,user=user)
 
 
-        return redirect(url_for('auth.register'))
-        title = "New Account"
+        #return redirect(url_for('auth.register'))
+    title = "New Account"
     return render_template('auth/register.html',registration_form = form,title=title)
 
 @auth.route('/logout')
