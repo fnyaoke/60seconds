@@ -5,6 +5,7 @@ class Config:
     """
     SECRET_KEY=os.environ.get('SECRET_KEY')
     UPLOADED_PHOTOS_DEST = 'app/static/photos'
+    SQLALCHEMY_DATABASE_URI = ''
     SQLALCHEMY_TRACK_MODIFICATIONS=True
 
 
@@ -29,13 +30,13 @@ class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI =os.environ.get("DATABASE_URL")
 
 class TestConfig(Config):
-    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://moringa:halowars54611@localhost/pitch_test'
+    SQLALCHEMY_DATABASE_URI =''
 
     pass
 
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://moringa:halowars54611@localhost/pitch'
+    SQLALCHEMY_DATABASE_URI =''
     DEBUG = True
 
 

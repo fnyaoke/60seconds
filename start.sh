@@ -1,0 +1,3 @@
+export SECRET_KEY=anything123
+export MAIL_USERNAME=fnyaoke@gmail.com
+export MAIL_PASSWORD=mysqlproject1

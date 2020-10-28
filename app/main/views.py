@@ -1,95 +1,84 @@
-from flask import render_template,request,redirect,url_for,abort
+from flask import render_template,request,redirect,url_for,abort,flash
 from . import main
-from .forms import PitchForm,UpdateProfile,ReviewForm
-from ..import db,photos
-from models import User,Pitch,Review
-from flask_login import login_required,current_user
-import markdown2
+from flask_login import login_required
+from ..models import User,Pitch
+from .forms import UpdateProfile,AddPitch
+from .. import db,photos
 
-#Views
-@main.route("/")
+@main.route('/')
 def index():
-    """
-    View root page function that return the index page and its data
-    """
-    pitches = Pitch.query.all()
 
-    title = "Home - Welcome to my Pitch"
-    return render_template('index.html',title=title,pitches=pitches)
+    '''
+    View root page function that returns the index page and its data
+    '''
 
-@main.route("/post",methods=['GET','POST'])
-@login_required
-def post():
-    form = PitchForm()
-    if form.validate_on_submit():
-        title = form.title.data
-        pitch = form.pitch.data
-        category= form.category.data
-        like=0
-        dislike=0
+    title = 'Pitch Deck'
 
-        # Updated pitch instance
-        new_pitch = Pitch(pitch_title=title,pitch_body=pitch,category=category,like=like,dislike=dislike,user=current_user)
+    return render_template('index.html', title = title)
 
-        # save pitch method
-        new_pitch.save_pitch()
-        return redirect(url_for('main.post'))
+@main.route('/interview/pitches/')
+def interview():
+    '''
+    View root page function that returns the index page and its data
+    '''
+    pitches= Pitch.get_all_pitches()
+    title = 'Home - Welcome to The best Pitching Website Online'  
+    return render_template('interview.html', title = title, pitches= pitches )
 
-    title="Post your pitch"
-    return render_template('post.html',title=title,pitch_form=form)
+@main.route('/pick_up_lines/pitches/')
+def pick_up_line():
+    '''
+    View root page function that returns the index page and its data
+    '''
+    title = 'Pick Up Lines'
 
-@main.route('/pitch_review/<int:id>',methods=['GET','POST'])
-@login_required
-def pitch_review(id):
-    pitch=Pitch.query.get_or_404(id)
-    comment= Review.query.all()
-    form=ReviewForm()
+    pitches= Pitch.get_all_pitches()
 
-    if request.args.get("like"):
-        pitch.like = pitch.like+1
+    return render_template('pickup.html', title = title, pitches= pitches )
 
-        db.session.add(pitch)
-        db.session.commit()
+@main.route('/dating/pitches/')
+def dating():
+    '''
+    View root page function that returns the index page and its data
+    '''
+    title = 'dating Pitches'
 
-        return redirect("/pitch_review/{pitch_id}".format(pitch_id=pitch.id))
+    pitches= Pitch.get_all_pitches()
 
-    elif request.args.get("dislike"):
-        pitch.dislike=pitch.dislike+1
+    return render_template('dating.html', title = title, pitches= pitches )
 
-        db.session.add(pitch)
-        db.session.commit()
 
-        return redirect("/pitch_review/{pitch_id}".format(pitch_id=pitch.id))
+@main.route('/product/pitches/')
+def product():
+    '''
+    View root page function that returns the index page and its data
+    '''
+    title = 'Product Pitches'
+    pitches= Pitch.get_all_pitches()
+    return render_template('product.html', title = title, pitches= pitches )
+@main.route('/loggedin')
+def loggedin():
 
-    if form.validate_on_submit():
-        review = form.review.data
+    title='Pitch Deck'
 
-        new_review = Review(id=id,review=review,user_id=current_user.id)
-
-        new_review.save_review()
-        return redirect(url_for('main.pitch_review',id=id))
-    reviews = Review.query.all()
-    return render_template('pitch_review.html',comment=comment,pitch=pitch,review_form=form,reviews=reviews)
+    return render_template('login.html',title=title)
 
 @main.route('/user/<uname>')
 def profile(uname):
-    user=User.query.filter_by(username=uname).first()
-    pitches = Pitch.query.filter_by(user_id=user.id).all()
+    user = User.query.filter_by(username=uname).first()
 
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html",user=user,pitches=pitches)
+    return render_template("profile.html",user=user)
 
-@main.route('/user/<uname>/update',methods=['GET','POST'])
-@login_required
+@main.route('/user/<uname>/update',methods =['GET','POST'])
 def update_profile(uname):
-    user = User.query.filter_by(username = uname).first()
+    user = User.query.filter_by(username=uname).first()
     if user is None:
         abort(404)
 
     form = UpdateProfile()
-
     if form.validate_on_submit():
         user.bio = form.bio.data
 
@@ -97,17 +86,38 @@ def update_profile(uname):
         db.session.commit()
 
         return redirect(url_for('.profile',uname=user.username))
-
-    return render_template('profile/update.html',form=form)
+    title = 'Update || Profile'
+    return render_template('update_profile.html',form=form,title=title)
 
 @main.route('/user/<uname>/update/pic',methods=['POST'])
-@login_required
+@login_required()
 def update_pic(uname):
-    user = User.query.filter_by(username = uname).first()
+    user = User.query.filter_by(username=uname).first()
     if 'photo' in request.files:
-        filename= photos.save(request.files['photo'])
+        filename = photos.save(request.files['photo'])
         path = f'photos/{filename}'
         user.profile_pic_path = path
         db.session.commit()
-
     return redirect(url_for('main.profile',uname=uname))
+
+@main.route('/user/<pitchname>/pitch',methods= ['GET','POST'])
+@login_required
+def addpitch(pitchname):
+
+    form = AddPitch()
+
+    if form.validate_on_submit():
+        pitch = Pitch(content=form.content.data,name=form.title.data)
+        db.session.add(pitch)
+        db.session.commit()
+
+        flash('THe pitch has been posted')
+        return redirect(url_for('main.addapitch',pitchname=pitch.name))
+
+    title = 'add a new pitch'
+    return render_template('new_pitch.html',form=form,title=title)
+
+@main.route('/all_pitches')
+def all_pitches():
+
+    return render_template('all-pitches.html')
