@@ -12,6 +12,7 @@ class UpdateProfile(FlaskForm):
     submit = SubmitField('Submit')
 
 class AddPitch(FlaskForm):
+    title = TextAreaField('Your pitch title')
     category_id = SelectField('Select category',choices=[('1','Interview'),('1','Interview'),('1','dating'),('1','Product'),('1','Pick Up lines')])
     content = TextAreaField('Your pitch')
     submit =SubmitField('Create your pitch')

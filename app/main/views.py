@@ -22,7 +22,7 @@ def interview():
     View root page function that returns the index page and its data
     '''
     pitches= Pitch.get_all_pitches()
-    title = 'Home - Welcome to The best Pitching Website Online'  
+    title = 'Home - Welcome to The best Pitching Website Online'
     return render_template('interview.html', title = title, pitches= pitches )
 
 @main.route('/pick_up_lines/pitches/')
@@ -82,22 +82,22 @@ def update_profile(uname):
     if form.validate_on_submit():
         user.bio = form.bio.data
 
-        db.session.add(user)
-        db.session.commit()
+        # db.session.add(user)
+        # db.session.commit()
 
         return redirect(url_for('.profile',uname=user.username))
     title = 'Update || Profile'
     return render_template('update_profile.html',form=form,title=title)
 
 @main.route('/user/<uname>/update/pic',methods=['POST'])
-@login_required()
+@login_required
 def update_pic(uname):
     user = User.query.filter_by(username=uname).first()
     if 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         path = f'photos/{filename}'
         user.profile_pic_path = path
-        db.session.commit()
+        # db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
 
 @main.route('/user/<pitchname>/pitch',methods= ['GET','POST'])
@@ -108,8 +108,8 @@ def addpitch(pitchname):
 
     if form.validate_on_submit():
         pitch = Pitch(content=form.content.data,name=form.title.data)
-        db.session.add(pitch)
-        db.session.commit()
+        # db.session.add(pitch)
+        # db.session.commit()
 
         flash('THe pitch has been posted')
         return redirect(url_for('main.addapitch',pitchname=pitch.name))
