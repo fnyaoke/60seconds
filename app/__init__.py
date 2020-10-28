@@ -21,7 +21,7 @@ photos = UploadSet('photos',IMAGES)
 def create_app(config_name):
     app=Flask(__name__)
 
-    import auth as auth_blueprint
+    from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint,url_prefix ='/auth')
 
     #Creating the app configurations
