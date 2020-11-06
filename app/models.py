@@ -76,7 +76,6 @@ class Comment(db.Model):
 
         return comments
 
-    
     def __repr__(self):
         return f'comment:{self.comment}'
 
@@ -86,7 +85,6 @@ class Upvote(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
-    
 
     def save(self):
         db.session.add(self)
