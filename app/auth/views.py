@@ -8,7 +8,7 @@ import markdown2
 from ..emails import mail_message
 
 #Views
-@auth.route('/login',methods=['GET','POST'])
+@auth.route('/log-in',methods=['GET','POST'])
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -20,26 +20,26 @@ def login():
         flash('Invalid username or Password')
 
     title = "Login"
-    return render_template('auth/login.html',login_form = login_form,title=title)
+    return render_template('/auth/log-in.html',login_form = login_form,title=title)
 
 
-@auth.route('/register',methods = ["GET","POST"])
+@auth.route('/registration',methods = ["GET","POST"])
 def register():
     form = Registration()
     if form.validate_on_submit():
         user = Role(email = form.email.data, username = form.username.data,password = form.password.data)
-        db.session.add(Role)
+        db.session.add(user)
         db.session.commit()
 
         mail_message("Welcome to one minute pitch","email/welcome_user",Role.email,user=user)
 
 
-        #return redirect(url_for('auth.register'))
+        return redirect(url_for('auth.registration'))
     title = "New Account"
-    return render_template('auth/register.html',registration_form = form,title=title)
+    return render_template('./auth/registration.html',registration_form = form,title=title)
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("templates.index"))
+    return redirect(url_for("../templates.index"))

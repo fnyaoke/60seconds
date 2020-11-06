@@ -6,7 +6,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     UPLOADED_PHOTOS_DEST = 'app/static/photos'
     SQLALCHEMY_DATABASE_URI="postgres://moringa:florence@localhost:5432/pitches"
-    # SQLALCHEMY_TRACK_MODIFICATIONS=True
+    SQLALCHEMY_TRACK_MODIFICATIONS=True
 
 
     #email configurations

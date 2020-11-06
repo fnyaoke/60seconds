@@ -23,7 +23,16 @@ def create_app(config_name):
     app=Flask(__name__)
 
       #Creating the app configurations
+    import os
+    SECRET_KEY = os.urandom(32)
+    app.config['SECRET_KEY']=SECRET_KEY
     app.config.from_object(config_options[config_name])
+
+    #Trial debugging CSRF runtime error
+    app.config.update(dict(
+    SECRET_KEY="powerful secretkey",
+    WTF_CSRF_SECRET_KEY="a csrf secret key"
+))
 
     #Initializing flask extensions
     bootstrap.init_app(app)
