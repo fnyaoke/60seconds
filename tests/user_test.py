@@ -2,7 +2,7 @@ import unittest
 
 from app.models import User
 
-class UserTest(unittest.TestCase):
+class TestUser(unittest.TestCase):
     def setUp(self):
         self.new_user = User(username='charles',password='qwerty')
 
