@@ -12,7 +12,7 @@ This web-app allows the user to submit their pitches,have them voted and comment
 
 ## Setup/Installation Requirements
 
-Set up information can be found on ''
+Set up information can be found on 'https://pitch60.herokuapp.com/'
 
 ## Live Link
 
@@ -20,25 +20,25 @@ Set up information can be found on ''
 
 ### BDD
 
-* The program should return all pitches on the home page<br>
-Given:All pitches<br>
-When: View is changed to home page<br>
-Then: Pitches from all users are shown<br>
+* The program should return all pitches on the home page
+Given:All pitches
+When: View is changed to home page
+Then: Pitches from all users are shown
 
-* One should receive an email when signing up<br>
-Given:A sign up feature<br>
-When: User successfully signs up <br>
-Then: Email is sent to the email registered with<br>
+* One should receive an email when signing up
+Given:A sign up feature
+When: User successfully signs up
+Then: Email is sent to the email registered with
 
-* The program should display a user's profile picture<br>
-Given: A choice to upload a profile picture<br>
-When: User uploads profile picture<br>
-Then: The image should be displayed to the user<br>
+* The program should display a user's profile picture
+Given: A choice to upload a profile picture
+When: User uploads profile picture
+Then: The image should be displayed to the user
 
-* Votes should be recorded and displayed to all the users<br>
-Given:A like/dislike option is given<br>
-When: User likes/dislikes a pitch <br>
-Then: The value is added to the number of likes/dislikes<br>
+* Votes should be recorded and displayed to all the users
+Given:A like/dislike option is given
+When: User likes/dislikes a pitch
+Then: The value is added to the number of likes/dislikes
 
 ### Technologies Used
 
