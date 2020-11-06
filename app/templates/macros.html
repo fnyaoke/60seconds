@@ -1,32 +1,35 @@
- 
-{% macro showPitch(pitches) %}
-{% for pitch in pitches %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="card mt-5">
-                <div class="card-header">
-                    <b>{{pitch.category}}</b>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">
-                        <i><strong>{{pitch.title}}</strong></i><br>
-                        <i>{{pitch.content}}</i>
-                        <i>{{pitch.author}}</i>
-                    </p>
-                    <div>
-                        <a href=""><button class="btn btn-danger">Up Vote</button></a>
-                        <a href=""><button class="btb btn-primary">Down Vote</button> </a>
-                        <a href="{{url_for('main.comment',pitch_id=pitch.id)}}">Comment</a>
-                    </div>
-                </div>
-                <li class="list-group-item">{{pitch.date_posted.strftime('%d-%m-%Y %H:%M')}}</li>
-                <a href="{{url_for('main.new_pitch')}}" class="btn btn-small">Add a Pitch</a>
-                </ul>
-            </div>
-        </div>
-    </div>
+{% macro display(piches) %}
+<div class="container-fluid">
+		<div class="row">
+				{% if piches %}
+					{% for category in piches %}
+					<div class="col-md-4" >
+						<div class="thumbnail" id="carded">
+							<h5 class="card-header">{{category.title}}</h5>
+							<div class="card-body">
+									<p>{{category.post}}</p>
+									<p class="text-center"> Category: {{category.category}}</p>
+									<footer class="blockquote-footer text-center" > Posted by: {{category.user.username}}</footer>
+								<div><span class="foot" >{{category.comment.count()}} Comments</span> 
+									<!--<span class="foot" > <a href="{{url_for('main.like',id = category.id)}}"><i class="fa fa-thumbs-up" style="font-size:18px;color: green"></i></a> {{category.upvote.count()}}</span>-->
+									
+									
+									<!--<span class="foot"> <a href="{{url_for('main.dislike',id = category.id)}}"><i class="fa fa-thumbs-down" style="color:red;"></i> {{category.downvote.count()}}</a></span></div>-->
+			
+								<a href="{{url_for('main.comment',pitch_id = category.id)}}" class="btn btn-info btn-sm"> Comment</a>
+							</div>
+						</div>
+					</div>
+					
+					{% endfor %}
+				{% else %}
+				<div class="card w-90 mb-3">
+					<div class="card-body">
+				
+						<p class="card-title">Category Has 0 posts</p>
+					</div>
+				</div>
+				{% endif %}
+			</div>
 </div>
-{% endfor %}
 {% endmacro %}
